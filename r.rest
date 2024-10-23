@@ -1,0 +1,11 @@
+### Get all classes
+GET http://localhost:3000/classes
+
+### Get Class by Id
+GET http://localhost:3000/classes/67158c001916506382080a22
+
+### Get all students
+GET http://localhost:3000/students
+
+### Get Class by Id
+GET http://localhost:3000/students/67183c790d710cc09237789b
