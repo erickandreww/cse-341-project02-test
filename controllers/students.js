@@ -4,6 +4,7 @@ const ObjectId = require('mongodb').ObjectId;
 const mongoose = require('mongoose');
 
 const getAllStudents = async (req,res) => {
+    //#swagger.tags=['Students']
     const result = await mongodb.getDatabase().db().collection('students').find();
     result.toArray().then((students) => {
         res.status(200).json(students);
@@ -11,6 +12,7 @@ const getAllStudents = async (req,res) => {
 }
 
 const getStudentById = async (req, res, next) => {
+    //#swagger.tags=['Students']
     const studentId = new ObjectId(req.params.id);
     try {
     const result = await mongodb.getDatabase().db().collection('students').find({_id: studentId});
@@ -27,6 +29,7 @@ const getStudentById = async (req, res, next) => {
 }
 
 const addStudent = async (req, res, next) => {
+    //#swagger.tags=['Students']
     const newStudent = {
         student_firstName: req.body.student_firstName, 
         student_lastName: req.body.student_lastName, 
@@ -49,6 +52,7 @@ const addStudent = async (req, res, next) => {
 }
 
 const updateStudent = async (req, res, next) => {
+    //#swagger.tags=['Students']
     const studentId = new ObjectId(req.params.id); 
     const studentPath = await mongodb.getDatabase().db().collection('students');
     studentPath.findOneAndUpdate(
@@ -80,6 +84,7 @@ const updateStudent = async (req, res, next) => {
 }
 
 const deleteStudent = async (req, res, next) => {
+    //#swagger.tags=['Students']
     const studentId = new ObjectId(req.params.id); 
     const studentPath = await mongodb.getDatabase().db().collection('students');
     studentPath.findOneAndDelete({_id: studentId})
@@ -96,5 +101,3 @@ const deleteStudent = async (req, res, next) => {
 }
 
 module.exports = { getAllStudents, getStudentById, addStudent, updateStudent, deleteStudent }
-
-// student_firstName, student_lastName, student_age, student_gender, student_email, student_class

@@ -13,7 +13,7 @@ app.use((req, res, next) => {
     ); 
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     next();
-})
+});
 
 // routes
 app.use('/', require('./routes/'))

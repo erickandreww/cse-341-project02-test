@@ -4,13 +4,16 @@ const ObjectId = require('mongodb').ObjectId;
 const mongoose = require('mongoose')
 
 const getAllClasses = async (req,res) => {
+    //#swagger.tags=['Classes']
     const result = await mongodb.getDatabase().db().collection('class').find();
     result.toArray().then((classes) => {
+        res.setHeader('Content-Type', 'application/json');
         res.status(200).json(classes);
     });
 }
 
 const getClass = async (req, res, next) => {
+    //#swagger.tags=['Classes']
     const classId = new ObjectId(req.params.id);
     try {
         const result = await mongodb.getDatabase().db().collection('class').find({_id: classId});
@@ -18,7 +21,8 @@ const getClass = async (req, res, next) => {
             if (!classes[0]) {
                 return next(createError(404, 'class does not exist'))
             }
-            res.send(classes[0])
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200).json(classes[0])
         })
     } catch (error) {
         console.log(error.message)
@@ -27,12 +31,18 @@ const getClass = async (req, res, next) => {
 }
 
 const createClass = async (req, res, next) => {
+    //#swagger.tags=['Classes']
     const newClass = {
         class_name: req.body.class_name, 
         class_floor: req.body.class_floor,
     }; 
+    console.log(newClass)
     const classPath = await mongodb.getDatabase().db().collection('class');
-    classPath.insertOne(newClass).then(result => {
+    classPath.insertOne(newClass).then(result => { 
+        if (classPath.acknowledged) {
+            res.setHeader('Content-Type', 'application/json');
+            res.status(200).json(newClass)
+        }
         console.log(result)
     })
     .catch((error) => {
@@ -45,7 +55,12 @@ const createClass = async (req, res, next) => {
 }
 
 const updateClass = async (req, res, next) => {
+    //#swagger.tags=['Classes']
     const classId = new ObjectId(req.params.id);
+    const newClass = {
+        class_name: req.body.class_name, 
+        class_floor: req.body.class_floor,
+    }; 
     const classPath = await mongodb.getDatabase().db().collection('class');
     classPath.findOneAndUpdate(
         {_id: classId}, 
@@ -63,7 +78,8 @@ const updateClass = async (req, res, next) => {
         if (!result) {
             return next(createError(404, 'class does not exist'))
         }
-        res.send(result);
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).json('Class updated');
     })
     .catch((error) => {
         console.log(error.message);
@@ -72,6 +88,7 @@ const updateClass = async (req, res, next) => {
 }
 
 const deleteClass = async (req, res, next) => {
+    //#swagger.tags=['Classes']
     const classId = new ObjectId(req.params.id);
     const classPath = await mongodb.getDatabase().db().collection('class');
     classPath.findOneAndDelete({_id: classId})
