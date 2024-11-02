@@ -1,25 +1,26 @@
 const express = require('express');
 const router = express.Router();
+const utilities = require('../utilities/index')
 const classesController = require('../controllers/classes');
 const validator = require('../utilities/validation')
 
-router.get('/', classesController.getAllClasses);
+router.get('/', utilities.handleErrors(classesController.getAllClasses));
 
-router.get('/:id', classesController.getClass);
+router.get('/:id', utilities.handleErrors(classesController.getClass));
 
 router.post('/',
     validator.classValidationRules(),
     validator.checkValidation,  
-    classesController.createClass
+    utilities.handleErrors(classesController.createClass)
 );
 
 router.put('/:id',
     validator.classValidationRules(),
     validator.checkValidation, 
-    classesController.updateClass
+    utilities.handleErrors(classesController.updateClass)
 );
 
-router.delete('/:id', classesController.deleteClass);
+router.delete('/:id', utilities.handleErrors(classesController.deleteClass));
 
 
 module.exports = router; 
